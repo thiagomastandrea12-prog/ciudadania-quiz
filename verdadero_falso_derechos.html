@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verdadero o Falso — Derechos Humanos</title>
+<style>
+  :root {
+    --bg: #5f3a50;
+    --bg-deep: #46283b;
+    --panel: #fffdf7;
+    --ink: #271a22;
+    --title: #5c2946;
+    --pink: #c77e92;
+    --pink-soft: #e3a0ad;
+    --cream: #f7e7d6;
+    --navy: #0e2040;
+    --blue: #263b69;
+    --green: #3f7456;
+    --red: #a74d55;
+    --shadow: rgba(22, 11, 18, .28);
+    --border: rgba(92, 41, 70, .25);
+    color-scheme: light dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  .app {
+    min-height: 100vh;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .texture,
+  .texture::before,
+  .texture::after {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .texture {
+    opacity: .22;
+    background:
+      radial-gradient(circle at 15% 20%, var(--pink) 0 2px, transparent 3px),
+      radial-gradient(circle at 80% 15%, var(--pink) 0 1.5px, transparent 2.5px),
+      radial-gradient(circle at 58% 75%, var(--pink) 0 2px, transparent 3px),
+      radial-gradient(circle at 25% 80%, var(--pink) 0 1px, transparent 2px);
+    background-size: 150px 150px, 220px 220px, 190px 190px, 170px 170px;
+  }
+
+  .corner {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    opacity: .32;
+    border: 6px solid var(--pink);
+    pointer-events: none;
+  }
+  .corner::before,
+  .corner::after {
+    content: "";
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    border: 5px solid var(--pink);
+  }
+  .corner.tl { left: -80px; top: -80px; border-radius: 0 30px 90px 0; }
+  .corner.tr { right: -80px; top: -80px; border-radius: 30px 0 0 90px; }
+  .corner.bl { left: -80px; bottom: -80px; border-radius: 0 90px 30px 0; }
+  .corner.br { right: -80px; bottom: -80px; border-radius: 90px 0 0 30px; }
+
+  main {
+    width: min(1180px, calc(100% - 32px));
+    min-height: 100vh;
+    margin: auto;
+    padding: 28px 0 34px;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    color: #fff;
+    margin-bottom: 16px;
+  }
+
+  .brand {
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    font-size: .82rem;
+  }
+
+  .progress {
+    font-weight: 800;
+    font-size: .9rem;
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 999px;
+    padding: 8px 13px;
+  }
+
+  .paper {
+    position: relative;
+    background: var(--panel);
+    border: 1px solid rgba(255,255,255,.55);
+    box-shadow: 0 22px 48px var(--shadow);
+    padding: clamp(28px, 5vw, 58px);
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    clip-path: polygon(
+      0 1.6%, 2% 0, 4% 1.1%, 6% .1%, 8% 1.2%, 10% 0, 12% 1.1%,
+      14% .2%, 16% 1.1%, 18% 0, 20% 1.1%, 22% .2%, 24% 1.2%, 26% 0,
+      28% 1.1%, 30% .2%, 32% 1.2%, 34% 0, 36% 1.1%, 38% .2%, 40% 1.1%,
+      42% 0, 44% 1.1%, 46% .2%, 48% 1.1%, 50% 0, 52% 1.1%, 54% .2%,
+      56% 1.1%, 58% 0, 60% 1.2%, 62% .2%, 64% 1.1%, 66% 0, 68% 1.1%,
+      70% .2%, 72% 1.1%, 74% 0, 76% 1.2%, 78% .2%, 80% 1.1%, 82% 0,
+      84% 1.1%, 86% .2%, 88% 1.1%, 90% 0, 92% 1.1%, 94% .2%, 96% 1.2%,
+      98% 0, 100% 1.4%, 100% 98.4%, 98% 100%, 96% 98.8%, 94% 100%,
+      92% 98.9%, 90% 100%, 88% 98.8%, 86% 100%, 84% 98.9%, 82% 100%,
+      80% 98.8%, 78% 100%, 76% 98.9%, 74% 100%, 72% 98.9%, 70% 100%,
+      68% 98.8%, 66% 100%, 64% 98.9%, 62% 100%, 60% 98.8%, 58% 100%,
+      56% 98.9%, 54% 100%, 52% 98.8%, 50% 100%, 48% 98.9%, 46% 100%,
+      44% 98.8%, 42% 100%, 40% 98.9%, 38% 100%, 36% 98.8%, 34% 100%,
+      32% 98.9%, 30% 100%, 28% 98.8%, 26% 100%, 24% 98.9%, 22% 100%,
+      20% 98.8%, 18% 100%, 16% 98.9%, 14% 100%, 12% 98.8%, 10% 100%,
+      8% 98.9%, 6% 100%, 4% 98.8%, 2% 100%, 0 98.4%
+    );
+  }
+
+  .paper::before,
+  .paper::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: var(--bg);
+    opacity: .23;
+  }
+  .paper::before { left: 10%; top: 16px; }
+  .paper::after { right: 13%; bottom: 20px; }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .16em;
+    font-weight: 900;
+    color: var(--pink);
+    text-align: center;
+    font-size: .78rem;
+    margin-bottom: 13px;
+  }
+
+  h1, h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    color: var(--title);
+    text-align: center;
+    margin: 0;
+    font-weight: 900;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 5.8rem);
+    line-height: .95;
+    max-width: 980px;
+    margin-inline: auto;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 4.5vw, 4.4rem);
+    line-height: 1.03;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+
+  .subtitle {
+    max-width: 780px;
+    margin: 24px auto 0;
+    text-align: center;
+    font-size: clamp(1rem, 1.7vw, 1.25rem);
+    line-height: 1.6;
+    color: #2b2026;
+  }
+
+  .question {
+    margin-top: 26px;
+    font-size: clamp(1.45rem, 3.1vw, 3rem);
+    line-height: 1.23;
+    font-weight: 800;
+    text-align: center;
+    max-width: 940px;
+    margin-inline: auto;
+    color: #151013;
+  }
+
+  .hint {
+    text-align: center;
+    margin: 20px auto 0;
+    color: #6e5962;
+    font-size: 1rem;
+  }
+
+  .answer-card {
+    margin: 30px auto 0;
+    max-width: 860px;
+    padding: 26px 30px;
+    border-radius: 24px;
+    background: #f7f0e9;
+    border: 2px solid var(--border);
+  }
+
+  .answer-label {
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .82rem;
+    font-weight: 900;
+    color: #6e5962;
+    margin-bottom: 10px;
+  }
+
+  .answer {
+    font-family: Georgia, 'Times New Roman', serif;
+    text-align: center;
+    font-size: clamp(2.2rem, 5vw, 4.3rem);
+    line-height: 1;
+    font-weight: 900;
+  }
+  .answer.true { color: var(--green); }
+  .answer.false { color: var(--red); }
+
+  .why {
+    margin-top: 16px;
+    text-align: center;
+    color: #3a2a31;
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  button {
+    appearance: none;
+    border: 0;
+    border-radius: 14px;
+    padding: 13px 20px;
+    font: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform .15s ease, filter .15s ease, background .15s ease;
+  }
+  button:hover { transform: translateY(-2px); filter: brightness(1.04); }
+  button:active { transform: translateY(0); }
+  button:focus-visible { outline: 3px solid #111; outline-offset: 3px; }
+
+  .primary { background: var(--title); color: white; }
+  .secondary { background: #ead4d9; color: var(--title); }
+  .true-btn { background: #dce9df; color: #2b6144; }
+  .false-btn { background: #f0d8d8; color: #873d46; }
+
+  .score {
+    display: none;
+    justify-content: center;
+    margin-top: 18px;
+    color: #6e5962;
+    font-size: .9rem;
+    font-weight: 800;
+  }
+
+  .score.visible { display: flex; }
+
+  .mark {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    right: 7%;
+    top: 8%;
+    border: 8px solid currentColor;
+    border-radius: 50%;
+    opacity: .08;
+    transform: rotate(-12deg);
+  }
+  .mark::after {
+    content: "?";
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font: 900 54px Georgia, serif;
+  }
+
+  .hidden { display: none !important; }
+
+  .footer {
+    color: rgba(255,255,255,.8);
+    text-align: center;
+    font-size: .8rem;
+    margin-top: 13px;
+  }
+
+  @media (max-width: 700px) {
+    main { width: min(100% - 18px, 1180px); padding-top: 12px; }
+    .paper { min-height: calc(100vh - 90px); padding: 24px 18px; }
+    .topbar { margin-bottom: 8px; }
+    .subtitle { font-size: .98rem; }
+    .question { font-size: 1.55rem; }
+    .answer-card { padding: 20px; }
+    .mark { width: 62px; height: 62px; top: 5%; right: 4%; }
+    .mark::after { font-size: 36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="texture"></div>
+  <div class="corner tl"></div><div class="corner tr"></div>
+  <div class="corner bl"></div><div class="corner br"></div>
+
+  <main>
+    <div class="topbar">
+      <div class="brand">Derechos humanos · Dinámica</div>
+      <div class="progress" id="progress">Inicio</div>
+    </div>
+
+    <section class="paper" id="startScreen">
+      <div class="eyebrow">Juego interactivo</div>
+      <h1>¿Verdadero<br>o falso?</h1>
+      <p class="subtitle">
+        Leemos una afirmación, el grupo responde y recién después revelamos la respuesta.
+        Las preguntas se basan en el material sobre <strong>derecho a la educación</strong>
+        y <strong>derechos de autor</strong>.
+      </p>
+      <div class="actions">
+        <button class="primary" id="startBtn">Empezar</button>
+      </div>
+    </section>
+
+    <section class="paper hidden" id="quizScreen" aria-live="polite">
+      <div class="mark" id="mark">?</div>
+      <div class="eyebrow" id="topic">Derecho a la educación</div>
+      <h2 id="questionNumber">Pregunta 1</h2>
+      <div class="question" id="questionText"></div>
+      <div class="hint">Piensen la respuesta antes de revelar.</div>
+
+      <div class="answer-card hidden" id="answerCard">
+        <div class="answer-label">La respuesta correcta es</div>
+        <div class="answer" id="answerText"></div>
+        <div class="why" id="whyText"></div>
+      </div>
+
+      <div class="actions" id="guessActions">
+        <button class="true-btn" id="guessTrue">Mi respuesta: VERDADERO</button>
+        <button class="false-btn" id="guessFalse">Mi respuesta: FALSO</button>
+        <button class="primary" id="revealBtn">Revelar respuesta</button>
+      </div>
+
+      <div class="actions hidden" id="nextActions">
+        <button class="secondary" id="backBtn">Anterior</button>
+        <button class="primary" id="nextBtn">Siguiente</button>
+      </div>
+
+      <div class="score" id="score"></div>
+    </section>
+
+    <div class="footer">Usa las flechas ← → del teclado para navegar. La barra espaciadora revela la respuesta.</div>
+  </main>
+</div>
+
+<script>
+const questions = [
+  {
+    topic: 'Derecho a la educación',
+    text: 'El derecho a la educación es un derecho humano fundamental.',
+    answer: true,
+    why: 'El material lo define expresamente como un derecho humano fundamental.'
+  },
+  {
+    topic: 'Derecho a la educación',
+    text: 'El acceso a la educación debe depender de la situación económica de cada persona.',
+    answer: false,
+    why: 'El material señala que todas las personas deben poder acceder a una educación de calidad sin importar su situación económica.'
+  },
+  {
+    topic: 'Derecho a la educación',
+    text: 'La educación permite adquirir conocimientos, desarrollar habilidades y formar valores.',
+    answer: true,
+    why: 'Es una de las funciones de la educación indicadas en el material.'
+  },
+  {
+    topic: 'Derecho a la educación',
+    text: 'El derecho a la educación garantiza una educación gratuita, inclusiva y de calidad.',
+    answer: true,
+    why: 'El material presenta esas tres características como parte de lo que garantiza este derecho.'
+  },
+  {
+    topic: 'Derecho a la educación',
+    text: 'Las becas para estudiantes son un ejemplo relacionado con el derecho a la educación.',
+    answer: true,
+    why: 'Las becas aparecen en el material como uno de los ejemplos.'
+  },
+  {
+    topic: 'Derechos de autor',
+    text: 'El derecho de autor protege obras creadas por una persona y reconoce su autoría.',
+    answer: true,
+    why: 'El material explica que protege creaciones como libros, canciones, fotografías, películas y programas informáticos.'
+  },
+  {
+    topic: 'Derechos de autor',
+    text: 'Los derechos de autor solo protegen obras literarias y no obras musicales o digitales.',
+    answer: false,
+    why: 'El material indica que también protegen obras musicales, artísticas y digitales.'
+  },
+  {
+    topic: 'Derechos de autor',
+    text: 'Los derechos de autor ayudan a proteger el esfuerzo de los creadores.',
+    answer: true,
+    why: 'El material explica que protegen el esfuerzo de los creadores, ayudan a evitar el plagio y fomentan la creatividad.'
+  },
+  {
+    topic: 'Derechos de autor',
+    text: 'Citar al autor cuando se utiliza su obra es una forma de respetar sus derechos.',
+    answer: true,
+    why: 'El material incluye citar al autor entre los ejemplos de respeto a los derechos de los creadores.'
+  },
+  {
+    topic: 'Derechos de autor',
+    text: 'Comprar contenido legal es una forma de respetar los derechos de los creadores.',
+    answer: true,
+    why: 'Comprar contenido legal aparece explícitamente entre los ejemplos del material.'
+  }
+];
+
+let index = 0;
+let revealed = false;
+let score = 0;
+let answeredGuess = false;
+
+const startScreen = document.getElementById('startScreen');
+const quizScreen = document.getElementById('quizScreen');
+const startBtn = document.getElementById('startBtn');
+const progress = document.getElementById('progress');
+const topic = document.getElementById('topic');
+const questionNumber = document.getElementById('questionNumber');
+const questionText = document.getElementById('questionText');
+const answerCard = document.getElementById('answerCard');
+const answerText = document.getElementById('answerText');
+const whyText = document.getElementById('whyText');
+const guessActions = document.getElementById('guessActions');
+const nextActions = document.getElementById('nextActions');
+const revealBtn = document.getElementById('revealBtn');
+const backBtn = document.getElementById('backBtn');
+const nextBtn = document.getElementById('nextBtn');
+const guessTrue = document.getElementById('guessTrue');
+const guessFalse = document.getElementById('guessFalse');
+const scoreEl = document.getElementById('score');
+const mark = document.getElementById('mark');
+
+function renderQuestion() {
+  const q = questions[index];
+  revealed = false;
+  answeredGuess = false;
+  topic.textContent = q.topic;
+  questionNumber.textContent = `Pregunta ${index + 1}`;
+  questionText.textContent = q.text;
+  answerCard.classList.add('hidden');
+  nextActions.classList.add('hidden');
+  guessActions.classList.remove('hidden');
+  answerText.textContent = '';
+  whyText.textContent = '';
+  scoreEl.classList.remove('visible');
+  progress.textContent = `${index + 1} / ${questions.length}`;
+  mark.style.color = 'var(--pink)';
+  mark.style.opacity = '.08';
+
+  backBtn.style.display = index === 0 ? 'none' : '';
+  nextBtn.textContent = index === questions.length - 1 ? 'Terminar' : 'Siguiente';
+}
+
+function startQuiz() {
+  startScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  index = 0;
+  score = 0;
+  renderQuestion();
+}
+
+function reveal() {
+  if (revealed) return;
+  revealed = true;
+  const q = questions[index];
+  answerCard.classList.remove('hidden');
+  answerText.textContent = q.answer ? 'VERDADERO' : 'FALSO';
+  answerText.className = `answer ${q.answer ? 'true' : 'false'}`;
+  whyText.textContent = q.why;
+  guessActions.classList.add('hidden');
+  nextActions.classList.remove('hidden');
+  scoreEl.textContent = answeredGuess ? 'Respuesta registrada.' : 'No hace falta registrar puntos para jugar.';
+  scoreEl.classList.add('visible');
+  mark.textContent = q.answer ? '✓' : '×';
+  mark.style.color = q.answer ? 'var(--green)' : 'var(--red)';
+  mark.style.opacity = '.12';
+}
+
+function registerGuess(value) {
+  if (answeredGuess || revealed) return;
+  answeredGuess = true;
+  if (value === questions[index].answer) score++;
+  guessTrue.style.opacity = value === true ? '1' : '.45';
+  guessFalse.style.opacity = value === false ? '1' : '.45';
+}
+
+function next() {
+  if (!revealed) {
+    reveal();
+    return;
+  }
+  if (index < questions.length - 1) {
+    index++;
+    renderQuestion();
+  } else {
+    showEnd();
+  }
+}
+
+function previous() {
+  if (index > 0) {
+    index--;
+    renderQuestion();
+  }
+}
+
+function showEnd() {
+  quizScreen.innerHTML = `
+    <div class="eyebrow">Fin de la dinámica</div>
+    <h1>¡Listo!</h1>
+    <p class="subtitle">
+      Ya pasaron por las ${questions.length} afirmaciones. Pueden repetir la actividad y discutir
+      las respuestas que generaron más dudas.
+    </p>
+    <div class="answer-card">
+      <div class="answer-label">Resultado de esta partida</div>
+      <div class="answer true">${score} / ${questions.length}</div>
+      <div class="why">El puntaje es solo orientativo; lo importante es debatir por qué cada afirmación es verdadera o falsa.</div>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="restartBtn">Jugar de nuevo</button>
+    </div>
+  `;
+  progress.textContent = 'Fin';
+  document.getElementById('restartBtn').addEventListener('click', () => location.reload());
+}
+
+startBtn.addEventListener('click', startQuiz);
+revealBtn.addEventListener('click', reveal);
+nextBtn.addEventListener('click', next);
+backBtn.addEventListener('click', previous);
+guessTrue.addEventListener('click', () => registerGuess(true));
+guessFalse.addEventListener('click', () => registerGuess(false));
+
+document.addEventListener('keydown', (e) => {
+  if (startScreen.classList.contains('hidden') === false) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      startQuiz();
+    }
+    return;
+  }
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft') previous();
+  if (e.key === ' ' || e.key === 'Enter') {
+    e.preventDefault();
+    if (!revealed) reveal(); else next();
+  }
+});
+</script>
+</body>
+</html>
